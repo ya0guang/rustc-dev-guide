@@ -44,7 +44,7 @@ being permitted in the type system is that every value must be uniquely represen
 a specific value must only be representable in one specific way. For example: there is only one way
 to represent an array of two integers as a `ValTree`: `ValTree::Branch(&[ValTree::Leaf(first_int), ValTree;:Leaf(second_int)])`.
 Even though theoretically a `[u32; 2]` could  be encoded in a `u64` and thus just be a `ValTree::Leaf(bits_of_two_u32)`, that
-is not a legal construction of `ValTree` (and is so complex to do, that it is unlikely to tempt anyone to do so).
+is not a legal construction of `ValTree` (and is so complex to do, so it is unlikely anyone is tempted to do so).
 These rules also mean that some values are not representable. There can be no `union`s in type level
 constants, as it is not clear how they should be represented, because their active variant is unknown.
 Similarly there is no way to represent pointers, as addresses are unknown at compile-time and thus we
