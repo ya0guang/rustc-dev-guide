@@ -43,14 +43,16 @@ allows us to represent arrays, many structs, tuples, enums and most primitives. 
 being permitted in the type system is that every value must be uniquely represented. In other words:
 a specific value must only be representable in one specific way. For example: there is only one way
 to represent an array of two integers as a `ValTree`: `ValTree::Branch(&[ValTree::Leaf(first_int), ValTree;:Leaf(second_int)])`.
-Even though theoretically a `[u32; 2]` could  be encoded in a `u64` and thus just be a `ValTree::Leaf(bits_of_two_u32)`, that
+Even though theoretically a `[u32; 2]` could be encoded in a `u64` and thus just be a `ValTree::Leaf(bits_of_two_u32)`, that
 is not a legal construction of `ValTree` (and is so complex to do, so it is unlikely anyone is tempted to do so).
+
 These rules also mean that some values are not representable. There can be no `union`s in type level
 constants, as it is not clear how they should be represented, because their active variant is unknown.
 Similarly there is no way to represent pointers, as addresses are unknown at compile-time and thus we
 cannot make any assumptions about them. References on the other hand can be represented, as equality
 for references is defined as equality on their value, so we ignore their address and just look at the
 backing value. This means that there is no difference in encoding for `&42` and `42`.
+
 As a consequence, all decoding of `ValTree` must happen by matching on the type first and making decisions
 depending on that. The value itself gives no useful information without the type that belongs to it.
 One notable oddity is `&str` representation. There is no sized equivalent of it, so unlike slices we cannot
